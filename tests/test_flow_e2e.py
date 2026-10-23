@@ -46,10 +46,14 @@ class TestEndToEndFlow(unittest.TestCase):
 
     def test_comparative_metrics_structure(self):
         metrics = get_comparative_metrics()
-        self.assertIn("benchmarks", metrics)
-        b = metrics["benchmarks"]
-        self.assertGreater(b["mttr_minutes"]["improvement_pct"], 90.0)
-        self.assertIn("$0.00", b["marginal_cost"]["after_gitlab_guardian"])
+        self.assertIn("empirical_measured_benchmark", metrics)
+        self.assertIn("industry_comparative_estimates", metrics)
+        emp = metrics["empirical_measured_benchmark"]["empirical_results"]
+        self.assertEqual(emp["diagnostic_accuracy_pct"], 100.0)
+        self.assertEqual(emp["secret_detection_accuracy_pct"], 100.0)
+        ind = metrics["industry_comparative_estimates"]
+        self.assertGreater(ind["mttr_minutes"]["estimated_reduction_pct"], 90.0)
+        self.assertIn("$0.00", ind["marginal_cost"]["gitlab_guardian_measured"])
 
 
 if __name__ == "__main__":

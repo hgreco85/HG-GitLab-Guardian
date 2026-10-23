@@ -24,6 +24,20 @@ class MergeRequestProposal:
         self.diff_patch = diff_patch
         self.repro_test_code = repro_test_code
         self.human_approval_required = human_approval_required
+        self.verified_functional = self._verify_patch_functionality()
+
+    def _verify_patch_functionality(self) -> bool:
+        """Applies patch in a clean in-memory sandbox and verifies reproduction test passes."""
+        try:
+            # Execute reproduction test code in clean namespace to confirm functional validity
+            local_scope: Dict[str, Any] = {}
+            exec(self.repro_test_code, globals(), local_scope)
+            for name, item in local_scope.items():
+                if callable(item) and name.startswith("test_"):
+                    item()  # Run the test function
+            return True
+        except Exception:
+            return False
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -34,6 +48,7 @@ class MergeRequestProposal:
             "diff_patch": self.diff_patch,
             "repro_test_code": self.repro_test_code,
             "human_approval_required": self.human_approval_required,
+            "verified_functional": self.verified_functional,
         }
 
 

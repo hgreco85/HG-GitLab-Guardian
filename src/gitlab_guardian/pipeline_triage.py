@@ -43,18 +43,21 @@ class TriageDiagnosis:
 
 def analyze_pipeline_log(log_text: str, event_summary: str = "") -> TriageDiagnosis:
     """Performs deterministic causal analysis on failing job logs."""
-    clean_log = sanitize_text(log_text)
-
-    # 1. Secret leakage in build / test log
-    if SECRET_LEAK_PATTERN.search(clean_log):
+    from security_guard import scan_for_secrets
+    
+    # 1. Secret leakage in build / test log or summary
+    has_raw_secret, secret_reason = scan_for_secrets(log_text + " " + event_summary)
+    if has_raw_secret or SECRET_LEAK_PATTERN.search(log_text):
         return TriageDiagnosis(
             category="SECRET_LEAKAGE",
-            root_cause="Job output or artifact contains leaked credentials",
+            root_cause="Job output or event contains leaked credentials",
             failing_component="ci_job_output_sanitizer",
             confidence=0.99,
             proposed_action="Immediately purge contaminated build artifacts, rotate token, and enable masking",
-            evidence_snippet=clean_log[:200],
+            evidence_snippet=secret_reason or "Sensitive credential detected",
         )
+
+    clean_log = sanitize_text(log_text)
 
     # 2. Dependency security advisory / CVE
     cve_match = SECURITY_CVE_PATTERN.search(clean_log)

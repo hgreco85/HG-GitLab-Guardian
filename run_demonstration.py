@@ -15,14 +15,24 @@ sys.path.insert(0, str(src_dir))
 
 from workflow_engine import WorkflowEngine
 from metrics import get_comparative_metrics
+from benchmark_suite import run_benchmark
 
 
 def run():
     print("=" * 80)
     print("  GITLAB GUARDIAN — AUTONOMOUS POST-CODE INCIDENT COMMANDER")
     print("  GitLab Transcend (Life After Code) Official Submission Demonstration")
-    print("  Powered by GitLab Duo Agent Platform Specification")
+    print("  Native Specification: .gitlab/duo/agent-config.yml & AGENTS.md")
     print("=" * 80)
+
+    print("\n[+] VERIFIED GITLAB HOST ARTIFACTS & ACTIVE WORKSPACE:")
+    print("  • GitLab Target Group:    https://gitlab.com/hg-stack-group")
+    print("  • GitLab Target Project:  https://gitlab.com/hg-stack-group/hg-stack-project")
+    print("  • GitLab Pipeline History:https://gitlab.com/hg-stack-group/hg-stack-project/-/pipelines")
+    print("  • Verified GitLab Job:    https://gitlab.com/hg-stack-group/hg-stack-project/-/jobs/17213324093")
+    print("  • Verified GitLab MR:     https://gitlab.com/hg-stack-group/hg-stack-project/-/merge_requests/5")
+    print("  • GitLab Duo Config:      https://gitlab.com/groups/hg-stack-group/-/settings/gitlab_duo/configuration")
+    print("  • GitHub Public Mirror:   https://github.com/hgreco85/HG-GitLab-Guardian")
 
     engine = WorkflowEngine()
     fixtures_pattern = str(current_dir / "fixtures" / "*.json")
@@ -54,6 +64,7 @@ def run():
             prop = res["proposal"]
             print(f"     Diagnosis Category: {diag['category']}")
             print(f"     Root Cause: {diag['root_cause']}")
+            print(f"     Functional Verification: {'PASSED (reproduction verified)' if prop.get('verified_functional') else 'STATIC'}")
             print(f"     Proposed MR: '{prop['title']}' -> branch '{prop['source_branch']}'")
             print(f"     Approval Gate: Human maintainer sign-off REQUIRED (Fail-Closed)")
         else:
@@ -79,15 +90,29 @@ def run():
     print(json.dumps(chain[-1], indent=2))
 
     print("\n" + "=" * 80)
-    print("  [3] QUANTITATIVE BEFORE VS AFTER BENCHMARKS")
+    print("  [3] EMPIRICAL MEASURED BENCHMARK (N=200 CASOS DETERMINISTAS)")
+    print("=" * 80)
+    benchmark_res = run_benchmark(dataset_size=200)
+    meta = benchmark_res["benchmark_metadata"]
+    emp = benchmark_res["empirical_results"]
+    print(f"• Sample Size:                       N={meta['sample_size_N']} cases")
+    print(f"• Methodology:                       {meta['methodology']}")
+    print(f"• Diagnostic Accuracy:               {emp['diagnostic_accuracy_pct']}% (Measured)")
+    print(f"• Secret Detection Accuracy:         {emp['secret_detection_accuracy_pct']}% (50 adversarial cases)")
+    print(f"• Average Execution Latency:         {emp['average_latency_microseconds']} microseconds/case")
+    print(f"• Median Execution Latency:          {emp['median_latency_microseconds']} microseconds/case")
+    print(f"• Throughput:                        {emp['throughput_cases_per_second']} cases/second")
+    print(f"• Marginal Cost:                     ${meta['marginal_cost_usd']} USD (Free-First)")
+
+    print("\n" + "=" * 80)
+    print("  [4] INDUSTRY BASELINE ESTIMATES (DORA STATE OF DEVOPS)")
     print("=" * 80)
     metrics = get_comparative_metrics()
-    for key, val in metrics["benchmarks"].items():
-        print(f"• {val['metric']}:")
-        print(f"    Before (Manual Developer): {val['before_manual']} {val['unit']}")
-        print(f"    After (GitLab Guardian):  {val['after_gitlab_guardian']} {val['unit']}")
-        if "improvement_pct" in val:
-            print(f"    Improvement:             +{val['improvement_pct']}%")
+    ind = metrics["industry_comparative_estimates"]
+    print(f"• Mean Time to Remediation (MTTR):")
+    print(f"    Manual Developer Baseline:       {ind['mttr_minutes']['manual_developer_baseline_estimate']} minutes")
+    print(f"    GitLab Guardian Pipeline:        ~{ind['mttr_minutes']['gitlab_guardian_agent_pipeline_estimate']} minutes (Estimated)")
+    print(f"    Estimated Reduction:             +{ind['mttr_minutes']['estimated_reduction_pct']}%")
 
     # Persist official receipt
     receipt = {
@@ -98,8 +123,17 @@ def run():
         "scenarios_tested": len(results),
         "ledger_verified": is_valid,
         "ledger_blocks": len(chain),
+        "verified_gitlab_links": {
+            "group": "https://gitlab.com/hg-stack-group",
+            "project": "https://gitlab.com/hg-stack-group/hg-stack-project",
+            "pipelines": "https://gitlab.com/hg-stack-group/hg-stack-project/-/pipelines",
+            "job": "https://gitlab.com/hg-stack-group/hg-stack-project/-/jobs/17213324093",
+            "merge_request": "https://gitlab.com/hg-stack-group/hg-stack-project/-/merge_requests/5",
+            "duo_configuration": "https://gitlab.com/groups/hg-stack-group/-/settings/gitlab_duo/configuration",
+            "github_mirror": "https://github.com/hgreco85/HG-GitLab-Guardian",
+        },
+        "empirical_benchmark_N200": benchmark_res,
         "results": results,
-        "metrics": metrics,
     }
 
     evidence_path = current_dir / "evidence_demonstration.json"

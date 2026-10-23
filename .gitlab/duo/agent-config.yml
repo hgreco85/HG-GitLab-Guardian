@@ -1,0 +1,25 @@
+# GitLab Duo Agent Platform - Official Configuration Specification
+# Reference: https://docs.gitlab.com/ee/user/gitlab_duo/agent_platform/
+# File location: .gitlab/duo/agent-config.yml
+
+image: python:3.11-slim
+
+setup_script:
+  - python -V
+  - export PYTHONPATH="src/gitlab_guardian:$PYTHONPATH"
+
+cache:
+  paths:
+    - .cache/pip
+    - __pycache__/
+  key: "gitlab-guardian-deps"
+
+network_policy:
+  allowed_domains:
+    - "gitlab.com"
+  include_gitlab_recommended_allowed_domains: true
+
+security:
+  fail_closed_on_secret: true
+  marginal_cost_guard: 0.00_usd
+  approval_gate: required
