@@ -1,0 +1,9 @@
+{
+  "incident_id": "INC-2026-UNIT-001",
+  "kind": "pipeline_failed",
+  "project": "hg-stack-group/gitlab-guardian",
+  "summary": "unit-test job failed in test_security_guard assertion",
+  "job_id": 9841235,
+  "job_name": "unit-tests",
+  "job_log": "Running tests...\n==================================== ERRORS ====================================\nAssertionError: Expected [REDACTED_SECRET] but got raw text\nFAILED tests/test_security.py::test_mask - AssertionError\n1 failed, 25 passed in 0.04s"
+}

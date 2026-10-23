@@ -1,0 +1,8 @@
+﻿{
+  "seat_assigned": true,
+  "community_role": "Developer",
+  "agent_platform_enabled": false,
+  "credit_balance_verified": false,
+  "zero_cost_guaranteed": false,
+  "runner_explicitly_enabled": false
+}

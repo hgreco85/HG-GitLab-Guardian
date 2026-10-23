@@ -1,0 +1,9 @@
+{
+  "incident_id": "INC-2026-SEC-002",
+  "kind": "security_alert",
+  "project": "hg-stack-group/gitlab-guardian",
+  "summary": "GitLab Dependency Scanning identified critical CVE-2026-3841 in lockfile",
+  "job_id": 9841236,
+  "job_name": "gemnasium-python-dependency-scanning",
+  "job_log": "[CRITICAL] CVE-2026-3841 discovered in urllib3 <2.0.0. Fixed in version >=2.2.2. Remediate immediately."
+}

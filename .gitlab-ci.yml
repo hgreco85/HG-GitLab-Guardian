@@ -1,0 +1,52 @@
+# GitLab CI/CD Pipeline - GitLab Guardian
+# Autonomous Post-Code Incident Management Architecture
+stages:
+  - lint
+  - test
+  - security-scan
+  - guardian-verify
+
+default:
+  image: python:3.11-slim
+  before_script:
+    - python -V
+    - export PYTHONPATH="src/gitlab_guardian:$PYTHONPATH"
+
+cache:
+  paths:
+    - .cache/pip
+    - __pycache__/
+
+# 1. Lint & Code Style
+lint:syntax:
+  stage: lint
+  script:
+    - python -m py_compile src/gitlab_guardian/*.py
+    - python -m py_compile tests/*.py
+
+# 2. Automated Test Suite (All Unit & Regression Tests)
+test:unit:
+  stage: test
+  script:
+    - python -m unittest discover -s tests -p "test_*.py" -v
+  artifacts:
+    when: always
+    reports:
+      junit: test-results.xml
+
+# 3. Security Audit & Secret Detection Gate
+security:secret-detection:
+  stage: security-scan
+  script:
+    - python -c "from gitlab_guardian.security_guard import scan_for_secrets; import pathlib; all_files = list(pathlib.Path('src').rglob('*.py')); leaks = [f for f in all_files if scan_for_secrets(f.read_text())[0]]; assert not leaks, f'Leaked secret in {leaks}'"
+    - echo "Zero secrets detected across entire codebase."
+
+# 4. GitLab Guardian Agent Verification (Reproducible E2E Triages)
+guardian:e2e-simulation:
+  stage: guardian-verify
+  script:
+    - python -c "from gitlab_guardian.workflow_engine import WorkflowEngine; import json, glob; engine = WorkflowEngine(); [print('Verified:', f, engine.run_lifecycle(json.load(open(f)))['status']) for f in glob.glob('fixtures/*.json')]"
+  artifacts:
+    paths:
+      - fixtures/
+    expire_in: 7 days

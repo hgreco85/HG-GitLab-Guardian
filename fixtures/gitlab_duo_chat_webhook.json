@@ -1,0 +1,8 @@
+{
+  "incident_id": "INC-2026-DUOCHAT-004",
+  "kind": "merge_request_opened",
+  "project": "hg-stack-group/gitlab-guardian",
+  "summary": "GitLab Duo Chat requested post-code compliance and pipeline check on MR !5",
+  "mr_iid": 5,
+  "job_log": "Pipeline #142 passed all stages. Ready for final maintainer review."
+}
