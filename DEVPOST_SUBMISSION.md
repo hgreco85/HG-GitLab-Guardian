@@ -74,6 +74,8 @@ Building with the **GitLab Duo Agent Platform** demonstrated how powerful agenti
 ---
 
 ## 5. Submission Links
-- **GitLab Repository:** `https://gitlab.com/hgreco85/gitlab-guardian` (or dedicated hackathon subgroup `gitlab-ai-hackathon/transcend-october-2026/43291390/gitlab-guardian`)
-- **GitHub Mirror:** `https://github.com/hgreco85/HG-Market-System/tree/feature/gitlab-guardian-v1-offline`
-- **Demo Video:** *See Video Script in `docs/DEMO_VIDEO_SCRIPT.md`*
+- **GitHub Repository (Public Mirror):** [https://github.com/hgreco85/HG-GitLab-Guardian](https://github.com/hgreco85/HG-GitLab-Guardian)
+- **GitLab Repository (Target Project):** `https://gitlab.com/hgreco85/gitlab-guardian` (or assigned hackathon subgroup `gitlab-ai-hackathon/transcend-october-2026/43291390/gitlab-guardian`)
+- **Demo Script & Video Storyboard:** [docs/DEMO_VIDEO_SCRIPT.md](https://github.com/hgreco85/HG-GitLab-Guardian/blob/main/docs/DEMO_VIDEO_SCRIPT.md)
+- **Reproducible Verification Script:** [run_demonstration.py](https://github.com/hgreco85/HG-GitLab-Guardian/blob/main/run_demonstration.py)
+- **Official Verification Receipt:** [evidence_demonstration.json](https://github.com/hgreco85/HG-GitLab-Guardian/blob/main/evidence_demonstration.json)
